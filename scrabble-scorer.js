@@ -33,11 +33,11 @@ function oldScrabbleScorer(word) {
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   let word = input.question("Let's play some scrabble! Enter a word: ");
+   let word = input.question("Let's play some scrabble!\n\nEnter a word: ");
    return word;
 };
 
-let newPointStructure;
+let newPointStructure = transform(oldPointStructure);
 
 let simpleScorer = function(word) {
    word = word.toUpperCase();
@@ -61,7 +61,15 @@ let vowelBonusScorer = function(word) {
    return letterPoints;
 };
 
-let scrabbleScorer;
+let scrabbleScorer = function(word) {
+   word = word.toLowerCase();
+   let letterPoints = 0;
+   for (let i = 0; i < word.length; i++) {
+			   letterPoints += newPointStructure[word[i]];
+      }
+   return letterPoints;
+};
+//console.log(scrabbleScorer('hello'));
 
 const scoringAlgorithms = [
    {
@@ -77,12 +85,12 @@ const scoringAlgorithms = [
    {
       name: "Scrabble",
       description: "The traditional scoring algorithm.",
-      scorerFunction: oldScrabbleScorer
+      scorerFunction: scrabbleScorer
    }
 ];
 
 function scorerPrompt(word){
-   let algorithmChoice = input.question("\nWhat scoring algorithm would you like to use?\n\n0 - Simple: One point per character\n1 - Vowel Bonus: Vowels are worth 3 points\n2 - Scrabble: Uses scrabble point system\nEnter 0, 1, or 2: ");
+   let algorithmChoice = input.question("What scoring algorithm would you like to use?\n\n0 - Simple: One point per character\n1 - Vowel Bonus: Vowels are worth 3 points\n2 - Scrabble: Uses scrabble point system\nEnter 0, 1, or 2: ");
    
    if (algorithmChoice === '0') {
       console.log(`Score for '${word}': ${scoringAlgorithms[0].scorerFunction(word)}`);
@@ -95,7 +103,16 @@ function scorerPrompt(word){
    }
 }
 
-function transform() {};
+function transform(obj) {
+   let valueToKey = {};
+   for (let pointValue in obj) {
+      let letters = obj[pointValue];
+      for (let i = 0; i < letters.length; i++) {
+         valueToKey[letters[i].toLowerCase()] = Number(pointValue);
+      }
+   }
+   return valueToKey;
+};
 
 function runProgram() {
    let word = initialPrompt();
