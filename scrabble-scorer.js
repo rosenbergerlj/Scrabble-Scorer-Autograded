@@ -43,7 +43,7 @@ let simpleScorer = function(word) {
    word = word.toUpperCase();
    let letterPoints = 0;
    for (let i = 0; i < word.length; i++) {
-      letterPoints = letterPoints + 1;
+      letterPoints += 1;
    }
    return letterPoints;
 };
@@ -69,7 +69,6 @@ let scrabbleScorer = function(word) {
       }
    return letterPoints;
 };
-//console.log(scrabbleScorer('hello'));
 
 const scoringAlgorithms = [
    {
@@ -112,7 +111,7 @@ function transform(obj) {
       }
    }
    return valueToKey;
-};
+}
 
 function runProgram() {
    let word = initialPrompt();
